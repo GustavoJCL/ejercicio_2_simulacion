@@ -14,9 +14,8 @@ export interface ResponseData {
   estadistico: { [index: number]: number };
   frecuencia_esperada: { [index: number]: number };
   frecuencia_observada: { [index: number]: number };
-  intervalo: { [index: number]: number };
-  poison: { [index: number]: number };
-  error: { [index: number]: number };
+  intervalo: { [index: number]: [number, number] };
+  poisson: { [index: number]: number };
   total_estadistico: number;
   total_estadistico_tabla: number;
   chi_square_values: GraphDistributionValues;
