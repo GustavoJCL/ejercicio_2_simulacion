@@ -35,8 +35,8 @@ jobs:
         run: pnpm install
       - name: build Tauri app
         run: |
-          pnpm run build
-          cargo tauri build --release
+          pnpm tauri build
+          
       - name: upload artifact
         uses: actions/upload-artifact@v2
         with:
