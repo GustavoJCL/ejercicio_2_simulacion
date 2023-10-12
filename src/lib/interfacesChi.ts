@@ -23,9 +23,8 @@ export interface ResponseData {
 export interface SourceDataItem {
   indice: number;
   intervalo: string;
-  poison: number;
+  poisson: number;
   estadistico: number;
   frecuencia_esperada: number;
   frecuencia_observada: number;
-  error: number;
 }

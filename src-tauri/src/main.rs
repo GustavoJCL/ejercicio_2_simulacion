@@ -35,7 +35,7 @@ fn chi_square(data_string: String, nivel_confianza: f64) -> ResponseData {
 
     let intervalo: BTreeMap<usize, (f64, f64)> = {
         let mut inter: BTreeMap<usize, (f64, f64)> = BTreeMap::new();
-        for i in 0..=m + 1 {
+        for i in 0..m {
             let start = if i != 0 {
                 min_value + inte_length * (i - 1) as f64
             } else {
@@ -50,19 +50,23 @@ fn chi_square(data_string: String, nivel_confianza: f64) -> ResponseData {
     let mut frecuencia_observada: BTreeMap<usize, f64> = BTreeMap::new();
     let n = data.len();
 
-    for i in 0..=m {
+    for i in 0..m {
         frecuencia_observada.insert(i as usize, 0.0);
     }
 
+    // println!("Intervalo: {:#?}", intervalo);
+    // println!("Frecuencia observada: {:#?}", frecuencia_observada);
     for (key, value) in &data {
         for (interval_index, (start, end)) in &intervalo {
             if value > start && value <= end {
                 let entry = frecuencia_observada.entry(*interval_index).or_insert(0.0);
                 *entry += 1.0;
-                break;
+                println!("{} : {} < {} <= {}", key, start, value, end);
+                // break;
             }
         }
     }
+    // println!("Frecuencia observada: {:#?}", frecuencia_observada);
 
     let mut total_events = 0.0;
 
@@ -82,10 +86,15 @@ fn chi_square(data_string: String, nivel_confianza: f64) -> ResponseData {
         poisson.insert(interval_index, v);
     }
 
+    // println!("Frecuencia observada: {:#?}", frecuencia_observada);
+    // println!("Poisson: {:#?}", poisson);
+    // println!("Intervalo: {:#?}", intervalo);
+
     let frecuencia_esperada: BTreeMap<usize, f64> = poisson
         .iter()
         .map(|(key, value)| (key.clone(), *value * n as f64))
         .collect();
+    // println!("Frecuencia esperada: {:#?}", frecuencia_esperada);
     let mut estadistico: BTreeMap<usize, f64> = BTreeMap::new();
     let mut total_estadistico = 0.0;
     for i in 0..poisson.len() {
@@ -107,7 +116,7 @@ fn chi_square(data_string: String, nivel_confianza: f64) -> ResponseData {
             let mut i = 0.0001;
             let mut count: usize = 0;
             let mut chi_inv_value: BTreeMap<usize, (f64, f64)> = BTreeMap::new();
-            while i < nivel_confianza * 1.25 {
+            while i <= 1.0 {
                 let inv_cdf = chi_square_function.inverse_cdf(i);
                 chi_inv_value.insert(count, (1.0 - i, inv_cdf));
                 count += 1;

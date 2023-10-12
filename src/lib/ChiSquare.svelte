@@ -21,7 +21,7 @@
 	let showResults: boolean = false;
 	let sourceData: SourceDataItem[] = [];
 	let estadistico_tabla_graph: [number, number];
-	let intervalor_data: string[];
+	let intervalo_data: string[];
 	let frecuencia_observada_data: number[];
 
 	async function prueba_chi_square(nivel_confianza: number) {
@@ -40,24 +40,31 @@
 			// const frecuencia_esperada = response_data.frecuencia_esperada;
 			// const frecuencia_observada = response_data.frecuencia_observada;
 			sourceData = [];
+			intervalo_data = [];
+			frecuencia_observada_data = [];
 			for (let i = 0; i < Object.keys(response_data.estadistico).length; i++) {
-				let intervalo_string: string = i === 0 ? '0 - ' + response_data.intervalo[i] : '';
-				response_data.intervalo[i - 1] + ' - ' + response_data.intervalo[i];
+				let intervalo_string: string =
+					i === 0
+						? '[ ' + response_data.intervalo[i][0] + ' - ' + response_data.intervalo[i][1] + ' ]'
+						: '< ' + response_data.intervalo[i][0] + ' - ' + response_data.intervalo[i][1] + ' ]';
 				sourceData.push({
 					indice: i,
 					estadistico: response_data.estadistico[i],
 					frecuencia_esperada: response_data.frecuencia_esperada[i],
 					frecuencia_observada: response_data.frecuencia_observada[i],
 					intervalo: intervalo_string,
-					poison: response_data.poison[i],
-					error: response_data.error[i]
+					poisson: response_data.poisson[i]
+					// error: response_data.error[i]
 				});
-				intervalor_data.push(intervalo_string);
+				intervalo_data.push(intervalo_string);
 				frecuencia_observada_data.push(response_data.frecuencia_observada[i]);
 			}
 			estadistico_tabla_graph = [parseFloat(nivel), response_data.total_estadistico_tabla];
 
-			// console.log(response_data);
+			// console.log(intervalo_data);
+			// console.log(frecuencia_observada_data);
+
+			console.log(response_data);
 
 			// console.log(sourceData);
 
@@ -74,23 +81,21 @@
 		if (response_data && response_data.total_estadistico !== undefined) {
 			getTableData = {
 				head: [
-					'Indice',
+					'Intervalo',
 					'Frecuencia Observada',
-					'Poison p(x)',
+					'Poidson p(x)',
 					'Frecuencia Esperada',
-					'Error',
 					'Estadistico'
 				],
 				body: tableMapperValues(sourceData, [
 					'intervalo',
 					'frecuencia_observada',
-					'poison',
+					'poisson',
 					'frecuencia_esperada',
-					'error',
 					'estadistico'
 				]),
 				meta: tableMapperValues(sourceData, ['position']),
-				foot: ['Total Estadistico', '', '', response_data.total_estadistico.toString()]
+				foot: ['Total Estadistico', '', '', '', response_data.total_estadistico.toString()]
 			};
 			// console.log(getTableData);
 		}
@@ -152,21 +157,25 @@
 	<div class="order-4 w-fit">
 		<p class="text-2xl font-bold">Resultado</p>
 		<Table interactive={true} source={getTableData} />
-		<div class="p-3 max-w-full rounded border-gray-300 bg-primary-100">
-			<!-- <HuecosChart {sourceData} /> -->
-		</div>
+		<!-- <div class="p-3 max-w-full rounded border-gray-300 bg-primary-100"> -->
+		<!-- <HuecosChart {sourceData} /> -->
+		<!-- </div> -->
 		<br />
-		<div class="p-3 max-w-full rounded border-gray-300 bg-primary-100">
+		<div class="flex flex-col p-3 space-y-3 max-w-full rounded border-gray-300 bg-primary-100">
 			{#key response_data}
-				<ChiSquareGraph
-					chi_square_values={response_data.chi_square_values}
-					estadistico_tabla={estadistico_tabla_graph}
-				/>
+				<div class="m-3">
+					<ChiSquareGraph
+						chi_square_values={response_data.chi_square_values}
+						estadistico_tabla={estadistico_tabla_graph}
+					/>
+				</div>
 				<br />
-				<HistogramGraph
-					intervalo={intervalor_data}
-					frecuencia_observada={frecuencia_observada_data}
-				/>
+				<div class="m-3">
+					<HistogramGraph
+						intervalo={intervalo_data}
+						frecuencia_observada={frecuencia_observada_data}
+					/>
+				</div>
 			{/key}
 		</div>
 		<div class="flex items-center p-3">

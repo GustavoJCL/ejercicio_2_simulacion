@@ -26,8 +26,8 @@
 
 	// console.log('heil esquizo');
 	// console.log(chi_square_values);
-	console.log(data_estadistico_tabla);
-	console.log(estadistico_tabla);
+	// console.log(data_estadistico_tabla);
+	// console.log(estadistico_tabla);
 	// data_estadistico_tabla.forEach((item) => {
 	// 	console.log(item[0]);
 	// 	console.log(item[1]);
