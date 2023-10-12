@@ -42,8 +42,4 @@ jobs:
         with:
           name: ${{ matrix.platform }}
           path: |
-            src-tauri/target/release/*.deb
-            src-tauri/target/release/*.rpm
-            src-tauri/target/release/*.AppImage
-            src-tauri/target/release/*.dmg
-            src-tauri/target/release/*.exe
+            src-tauri/target/release/*
