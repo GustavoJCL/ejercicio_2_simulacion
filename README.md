@@ -1,6 +1,7 @@
 # create-svelte tauri
 
 Everything you need to build a SvelteKit Tuari project, powered by [`create-svelte`]([https://github.com/sveltejs/kit/tree/master/packages/create-svelte](https://tauri.app/v1/guides/getting-started/setup/sveltekit)).
+(https://tauri.app/v1/guides/getting-started/setup/sveltekit/)
 
 ## Creating a project
 
