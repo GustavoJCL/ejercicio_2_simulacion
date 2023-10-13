@@ -37,7 +37,19 @@ jobs:
         run: pnpm install
       - name: build Tauri app
         run: |
-          pnpm run build
+          pnpm tauri build
+      
+      - name: Build the app
+        uses: tauri-apps/tauri-action@v0
+
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tagName: ${{ github.ref_name }} # This only works if your workflow triggers on new tags.
+          releaseName: 'App Name v__VERSION__' # tauri-action replaces \_\_VERSION\_\_ with the app version.
+          releaseBody: 'See the assets to download and install this version.'
+          releaseDraft: true
+          prerelease: false
       - name: upload artifact
         uses: actions/upload-artifact@v2
         with:
@@ -50,6 +62,6 @@ jobs:
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
-          git add -A
-          git commit -m "Add build artifacts" || echo "No changes to commit"
+          git add src-tauri/target/release
+          git commit -m "Add build artifacts for commit ${{ github.sha }}" || echo "No changes to commit"
           git push origin HEAD:${{ github.ref }}
