@@ -3,6 +3,12 @@
 Everything you need to build a SvelteKit Tuari project, powered by [`create-svelte`]([https://github.com/sveltejs/kit/tree/master/packages/create-svelte](https://tauri.app/v1/guides/getting-started/setup/sveltekit)).
 (https://tauri.app/v1/guides/getting-started/setup/sveltekit/)
 
+## Latest Release
+
+The latest release of `create-svelte tauri` is [{{latest_release}}](https://github.com/your-repo/releases/latest). You can download the executables for your platform from the links below:
+
+{{download_links}}
+
 ## Creating a project
 
 If you're seeing this, you've probably already done this step. Congrats!
