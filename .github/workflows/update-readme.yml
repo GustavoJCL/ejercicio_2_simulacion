@@ -4,6 +4,10 @@ on:
   release:
     types:
       - created
+  push:
+    branches:
+      - "*"
+  workflow_dispatch:
 
 jobs:
   update-readme:
