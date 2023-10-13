@@ -5,7 +5,9 @@ Everything you need to build a SvelteKit Tuari project, powered by [`create-svel
 
 ## Download Latest Release
 
-You can download the latest release of `create-svelte tauri` from the [releases page](https://github.com/GustavoJCL/ejercicio_2_simulacion/releases/latest).
+You can download the latest release of `create-svelte tauri` from the [releases page (Download)](https://github.com/GustavoJCL/ejercicio_2_simulacion/releases/latest).
+
+[Download the csv File](https://github.com/GustavoJCL/ejercicio_2_simulacion/blob/master/chi_csv_data.csv%20-%20Hoja%201.csv)
 
 ## Creating a project
 
