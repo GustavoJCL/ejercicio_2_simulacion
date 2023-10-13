@@ -1,0 +1,37 @@
+name: Update README
+
+on:
+  release:
+    types:
+      - created
+
+jobs:
+  update-readme:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Update README
+        run: |
+          # Fetch latest release information
+          release=$(curl -s "https://api.github.com/repos/${{ github.repository }}/releases/latest")
+          tag_name=$(echo "$release" | jq -r '.tag_name')
+          assets=$(echo "$release" | jq -r '.assets')
+
+          # Generate download links
+          download_links=""
+          while IFS= read -r asset; do
+            name=$(echo "$asset" | jq -r '.name')
+            browser_download_url=$(echo "$asset" | jq -r '.browser_download_url')
+            download_links+="[Download $name]($browser_download_url)\n"
+          done <<< "$assets"
+
+          # Update README file
+          sed -i "s|{{latest_release}}|$tag_name\n\n$download_links|" README.md
+          
+          # Commit and push changes
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git commit -am "Update README with latest release"
+          git push
